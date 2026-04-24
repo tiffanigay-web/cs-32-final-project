@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", "Avenir", "Segoe UI", sans-serif;
+  color: #3f3429;
+}
+
+.card {
+  @apply rounded-3xl bg-white/90 shadow-soft p-6;
+}

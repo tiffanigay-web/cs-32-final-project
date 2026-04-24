@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String         @id @default(cuid())
+  email              String         @unique
+  name               String
+  energyLevel        String         @default("medium")
+  preferredStudyDays String[]
+  breakDays          String[]
+  plantName          String         @default("Sprout")
+  xp                 Int            @default(0)
+  streak             Int            @default(0)
+  mood               String         @default("idle")
+  courses            Course[]
+  assignments        Assignment[]
+  studySessions      StudySession[]
+  plans              Plan[]
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  name        String
+  color       String?
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+}
+
+model Assignment {
+  id          String    @id @default(cuid())
+  title       String
+  dueDate     DateTime
+  difficulty  Int
+  completed   Boolean   @default(false)
+  xpAwarded   Int       @default(0)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+}
+
+model StudySession {
+  id              String   @id @default(cuid())
+  date            DateTime @default(now())
+  durationMinutes Int
+  completed       Boolean  @default(false)
+  abandoned       Boolean  @default(false)
+  xpAwarded       Int      @default(0)
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Plan {
+  id          String   @id @default(cuid())
+  generatedAt DateTime @default(now())
+  planJson    Json
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

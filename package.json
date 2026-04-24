@@ -1,0 +1,29 @@
+{
+  "name": "growpath-mvp",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w @growpath/api\" \"npm run dev -w @growpath/web\"",
+    "build": "npm run build -ws",
+    "lint": "npm run lint -ws",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.29",
+    "concurrently": "^9.2.1",
+    "prisma": "^6.8.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
